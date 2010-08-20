@@ -1,7 +1,4 @@
 import re, string, datetime
-from PMS import *
-from PMS.Objects import *
-from PMS.Shortcuts import *
 
 VIDEO_PREFIX      = "/video/imovies"
 BASE_URL = "http://imovies.blogspot.com"
@@ -22,7 +19,7 @@ def Start():
 def MainMenuVideo():
     dir = MediaContainer(mediaType='video')  
     dir.Append(Function(DirectoryItem(RecentAdditions, "Recent Additions", thumb=R(ICON))))
-    for item in XML.ElementFromURL(BASE_URL, True, errors='ignore').xpath('//div/span/a'):
+    for item in HTML.ElementFromURL(BASE_URL, errors='ignore').xpath('//div/span/a'):
         if(item.text):
             title = item.text.strip()
             url = FULL_LABEL_URL % title
@@ -37,8 +34,8 @@ def RecentAdditions(sender):
         title = entry.title
         updated = Datetime.ParseDate(entry.updated).strftime('%a %b %d, %Y')
         summary = entry.summary
-        summaryText = XML.ElementFromString(summary, True).xpath('descendant::text()')[0].strip()
-        thumb = XML.ElementFromString(summary, True).xpath('descendant::img')[0].get('src')
+        summaryText = HTML.ElementFromString(summary).xpath('descendant::text()')[0].strip()
+        thumb = HTML.ElementFromString(summary).xpath('descendant::img')[0].get('src')
         Log(thumb)
         link = ""
         for item in entry.links:
@@ -75,7 +72,7 @@ def Category(sender, url):
 # 
 def ConstructGroupMap(url):
     groupMap = dict()
-    for item in XML.ElementFromURL(url, True, errors='ignore').xpath('//div[@class="blogPost"]'):
+    for item in HTML.ElementFromURL(url, errors='ignore').xpath('//div[@class="blogPost"]'):
        titleElement = item.xpath('preceding-sibling::h2')[-1]
        title = ""
        if len(titleElement.xpath('a')) > 0:
