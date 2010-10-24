@@ -17,18 +17,24 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>PlexAudioCodec</key>
-	<string>MP3</string>
+	<array>
+		<string>MP3</string>
+	</array>
 	<key>PlexClientPlatforms</key>
 	<string>MacOSX</string>
 	<key>PlexFrameworkVersion</key>
 	<string>2</string>
 	<key>PlexMediaContainer</key>
-	<string>AVI</string>
+	<array>
+		<string>AVI</string>
+	</array>
 	<key>PlexPluginDebug</key>
 	<string>1</string>
 	<key>PlexPluginMode</key>
 	<string>AlwaysOn</string>
 	<key>PlexVideoCodec</key>
-	<string>MPEG4</string>
+	<array>
+		<string>MPEG4</string>
+	</array>
 </dict>
 </plist>
