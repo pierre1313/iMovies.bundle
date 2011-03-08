@@ -21,7 +21,7 @@
 		<string>MP3</string>
 	</array>
 	<key>PlexClientPlatforms</key>
-	<string>MacOSX</string>
+	<string>MacOSX,LGTV</string>
 	<key>PlexFrameworkVersion</key>
 	<string>2</string>
 	<key>PlexMediaContainer</key>
