@@ -28,7 +28,7 @@
 	<array>
 		<string>AVI</string>
 	</array>
-	<key>PlexPluginDebug</key>
+	<key>PlexPluginConsoleLogging</key>
 	<string>1</string>
 	<key>PlexPluginMode</key>
 	<string>AlwaysOn</string>

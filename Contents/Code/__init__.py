@@ -14,7 +14,7 @@ def Start():
   Plugin.AddViewGroup("Details", viewMode="InfoList", mediaType="items")
   MediaContainer.art = R('art-default.png')
   MediaContainer.title1 = 'iMovies'
-  HTTP.SetCacheTime(CACHE_INTERVAL)
+  HTTP.CacheTime = CACHE_INTERVAL
   
 def MainMenuVideo():
     dir = MediaContainer(mediaType='video')  
@@ -25,6 +25,13 @@ def MainMenuVideo():
             url = FULL_LABEL_URL % title
             dir.Append(Function(DirectoryItem(Category, title=title, thumb=R(ICON)), url=url))
     return dir
+
+def Thumb(url):
+  try:
+    data = HTTP.Request(url, cacheTime=CACHE_1WEEK).content
+    return DataObject(data, 'image/jpeg')
+  except:
+    return Redirect(R(ICON))
     
 #############################
 def RecentAdditions(sender):
@@ -36,13 +43,12 @@ def RecentAdditions(sender):
         summary = entry.summary
         summaryText = HTML.ElementFromString(summary).xpath('descendant::text()')[0].strip()
         thumb = HTML.ElementFromString(summary).xpath('descendant::img')[0].get('src')
-        Log(thumb)
         link = ""
         for item in entry.links:
             if item.has_key('title') and item.title == 'AVI':
                 link = item['href']
         if(len(link) > 0):
-            dir.Append(VideoItem(link, title=title, summary=summaryText, thumb=thumb, subtitle=updated))
+            dir.Append(VideoItem(link, title=title, summary=summaryText, thumb=Function(Thumb,url=thumb), subtitle=updated))
     return dir
     
 ###################################
@@ -62,7 +68,7 @@ def Category(sender, url):
             title = group
             if group != groupItem[0]:
                title = group + " - " + groupItem[0]
-            dir.Append(VideoItem(groupItem[4], title=title, subtitle=groupItem[1], summary=groupItem[2], thumb=groupItem[3]))
+            dir.Append(VideoItem(groupItem[4], title=title, subtitle=groupItem[1], summary=groupItem[2], thumb=Function(Thumb,url=groupItem[3])))
     return dir 
 
 ###############################
@@ -111,7 +117,7 @@ def Group(sender, items):
     
     dir = MediaContainer(viewGroup='Details', title2=sender.itemTitle) 
     for item in items:
-        dir.Append(VideoItem(item[4], title=item[0], subtitle=item[1], summary=item[2], thumb=item[3]))
+        dir.Append(VideoItem(item[4], title=item[0], subtitle=item[1], summary=item[2], thumb=Function(Thumb,url=item[3])))
     return dir
 
 ################################################
